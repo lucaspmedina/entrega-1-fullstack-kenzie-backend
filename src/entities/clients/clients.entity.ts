@@ -1,16 +1,19 @@
-import { getRounds, hashSync } from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 import {
     Column,
     CreateDateColumn,
     Entity,
     OneToMany,
+    PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { Contato } from './contacts.entity';
+import { Contato } from '../contacts/contacts.entity';
 
 @Entity('client')
 class Cliente {
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
+
     @Column()
     name: string;
 
@@ -32,13 +35,6 @@ class Cliente {
 
     @OneToMany(() => Contato, (contact) => contact.clients)
     contacts: Contato[];
-
-    passwordHash() {
-        const isEncrypted = getRounds(this.password);
-        if (!isEncrypted) {
-            this.password = hashSync(this.password, 10);
-        }
-    }
 }
 
 export { Cliente };

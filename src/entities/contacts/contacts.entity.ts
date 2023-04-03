@@ -6,7 +6,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { Cliente } from './clients.entity';
+import { Cliente } from '../clients/clients.entity';
 
 @Entity('contacts')
 class Contato {

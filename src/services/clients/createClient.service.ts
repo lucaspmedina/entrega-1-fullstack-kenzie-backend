@@ -40,3 +40,5 @@ const createNewClientService = async ({
     );
     return returnedClient;
 };
+
+export default createNewClientService;

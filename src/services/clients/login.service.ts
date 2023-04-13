@@ -1,28 +1,45 @@
 import { compare } from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { AppDataSource } from '../../data-source';
 import { Cliente } from '../../entities/clients/clients.entity';
 import { AppError } from '../../errors/app.errors';
-import { IClientLogin } from '../../interfaces/clients';
+import { IClientLogin, IClienteLoginResponse } from '../../interfaces/clients';
+import { clientsWhitNoPasswordSchema } from '../../schemas/clients.schemas';
 
-const newClientLoginService = async ({
+const clientLoginService = async ({
     email,
     password,
-}: IClientLogin): Promise<string> => {
-
+}: IClientLogin): Promise<IClienteLoginResponse> => {
     const clientsRepository = AppDataSource.getRepository(Cliente);
-    const foundClient = await clientsRepository.findOneBy({email:email})
-    if (!foundClient){
-        throw new AppError("Email/password combination invalid", 403);      
+
+    const foundClient = await clientsRepository.findOneBy({ email: email });
+
+    if (!foundClient) {
+        throw new AppError('Email/password combination invalid', 403);
     }
 
-    const checkPassword = await compare(password, foundClient.password)
-    if(!checkPassword){
-        throw new AppError("Email/password combination invalid", 403);      
+    const checkPassword = await compare(password, foundClient.password);
+    if (!checkPassword) {
+        throw new AppError('Email/password combination invalid', 403);
     }
 
-    const sentData = {
-        email: foundClient.email
-    }
+    const token = jwt.sign(
+        { email: foundClient.email },
+        process.env.SECRET_KEY!,
+        {
+            subject: foundClient.id,
+            expiresIn: '24h',
+        }
+    );
 
-    const secretKey = process.env.SECRET_KEY
+    const responseClient = await clientsWhitNoPasswordSchema.validate(
+        foundClient,
+        {
+            stripUnknown: true,
+        }
+    );
+
+    return { responseClient, token };
 };
+
+export default clientLoginService;

@@ -2,7 +2,7 @@ import { hashSync } from 'bcryptjs';
 import { AppDataSource } from '../../data-source';
 import { Cliente } from '../../entities/clients/clients.entity';
 import { AppError } from '../../errors/app.errors';
-import { IClientsRequest } from '../../interfaces/clients';
+import { IClientsRequest, IClientsResponse } from '../../interfaces/clients';
 import { clientsWhitNoPasswordSchema } from '../../schemas/clients.schemas';
 
 const createNewClientService = async ({
@@ -10,7 +10,7 @@ const createNewClientService = async ({
     email,
     phone,
     password,
-}: IClientsRequest) => {
+}: IClientsRequest): Promise<IClientsResponse> => {
     const clientsRepository = AppDataSource.getRepository(Cliente);
 
     const emailAlreadyExists = await clientsRepository.findOneBy({ email });

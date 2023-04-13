@@ -17,4 +17,10 @@ const clientsWhitNoPasswordSchema: yup.SchemaOf<IClients> = yup.object().shape({
     updatedAt: yup.date().notRequired(),
 });
 
-export { clientsSchema, clientsWhitNoPasswordSchema };
+const listResponseClientsSchema = yup.array(clientsWhitNoPasswordSchema);
+
+export {
+    clientsSchema,
+    clientsWhitNoPasswordSchema,
+    listResponseClientsSchema,
+};

@@ -3,9 +3,10 @@ import * as express from 'express';
 declare global {
   namespace Express {
     interface Request {
-      clients: {
+      client: {
         id: string;
       };
+      clients: IClientToken
     }
   }
 }

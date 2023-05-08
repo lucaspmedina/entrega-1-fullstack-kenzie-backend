@@ -23,7 +23,7 @@ const AppDataSource = new DataSource(
               database: process.env.PGDATABASE,
               username: process.env.PGUSER,
               password: process.env.PGPASSWORD,
-              port: parseInt(process.env.PGPORT!),
+              port: parseInt(process.env.PGPORT),
               synchronize: false,
               logging: true,
               entities: [Cliente, Contato],

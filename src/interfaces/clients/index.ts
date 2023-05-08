@@ -24,3 +24,17 @@ export interface IClientUpdate {
     phone?: string;
     password?: string;
 }
+
+export interface IClientsResponse {
+    id?: string;
+    name?: string;
+    phone?: string;
+    email?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export interface IClienteLoginResponse {
+    responseClient: IClients,
+    token: string,
+}
